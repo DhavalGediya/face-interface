@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>Noor Face Try on</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="./newstyle.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.11.0/js/bootstrap-tour-standalone.min.js">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.11.0/css/bootstrap-tour-standalone.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <script src="https://use.fontawesome.com/ba19efa221.js"></script>
+
+    <script>
+        new WOW().init();
+    </script>
+
+    <script type="text/javascript">
+        let isIphoneDevice = false;
+        let swCamera = false
+        let iOS = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+        let isSafari = /(Mac|iPhone|iPod|iPad)/i.test(window.navigator.userAgent) &&
+            /WebKit/i.test(window.navigator.userAgent) &&
+            !(/(CriOS|FxiOS|OPiOS|mercury)/i.test(window.navigator.userAgent));
+        if (iOS || isSafari) {
+            isIphoneDevice = true
+            let isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            if (!isMac) {
+                swCamera = true
+            }
+        }
+    </script>
+
+    <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
+    <script src="javascript/userLog.js"></script>
+    <script src="javascript/axiosDataCallFace.js"></script>
+    <script src="javascript/wow.js"></script>
+    <script>
+        setTimeout(() => {
+            document.getElementById("neck").classList.add("overflowcolumn");
+        }, 1000);
+        setTimeout(() => {
+            document.getElementById("Earing").classList.add("overflowcolumn");
+        }, 1000);
+        setTimeout(() => {
+            document.getElementById("nose").classList.add("overflowcolumn");
+        }, 1000);
+    </script>
+</head>
+
+<body class="loader" onload="pageLoaded()">
+
+    <div id="loder">
+        <div id="loading-wrapper">
+            <div id="loading-text">LOADING</div>
+            <div id="loading-content"></div>
+        </div>
+    </div>
+
+    <!-- error popup design -->
+    <div></div>
+    <!-------------------------------- camera section start----------------------------------- -->
+    <div class="centerflex">
+        <div id="photoUpload" class="photoUpload"></div>
+        <canvas id="flipedEarring" style="display: none;"></canvas>
+
+        <div id="_canvas_container" class="wow zoomIn _canvas_container"></div>
+        <div class="overlayShade wow zoomIn" style="display: flex" id="overlayShade">
+            <img id="nofaceFound" class="widthnofacefound" back src="image/newFaceWeb.png" crossorigin="anonymous" style="display: none" />
+        </div>
+    </div>
+    <!-------------------------------- camera section end----------------------------------- -->
+    <!-------------------------------- tab section start ----------------------------------- -->
+
+    <div class="container-fluid" style="position: absolute; overflow: hidden">
+        <div class="row">
+            <div class="imagePanel positionimagepanel imagepanelactive" id="ImagePanel">
+                <div class="flexcolumndiv">
+                    <label class="titlelabel" id="projectName"></label>
+                </div>
+
+                <div class="tabs">
+                    <input type="radio" id="tab1" name="tab-control" checked />
+                    <input type="radio" id="tab2" name="tab-control" />
+                    <input type="radio" id="tab3" name="tab-control" />
+                    <ul>
+                        <li id="lblNecklace" title="Necklace">
+                            <label for="tab1" role="button">
+                                <br />
+                                <span>Necklace</span>
+                            </label>
+                        </li>
+                        <li id="lblEaring" title="Earing">
+                            <label for="tab2" role="button">
+                                <br />
+                                <span>Earing</span></label>
+                        </li>
+                        <li id="lblNoseRing" title="Nose Ring">
+                            <label for="tab3" role="button">
+                                <br /><span>Nose Ring</span>
+                            </label>
+                        </li>
+                    </ul>
+
+                    <div class="slider">
+                        <div class="indicator"></div>
+                    </div>
+                    <div class="content">
+                        <section>
+                            <div class="flexcolumndiv heightflexcolumndiv">
+                                <label id="lblNecklace1" class="titlecolor" style="opacity: 0">
+                                    Necklace:
+                                </label>
+                                <div class="heightneck" id="neck">
+                                    <div class="flexdivnecklace marignbottomdiv" id="NecklaceImage"></div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="flexcolumndiv heightflexcolumndiv">
+                                <label id="lblEaring1" class="titlecolor" style="opacity: 0">
+                                    Earing:
+                                </label>
+                                <div class="heightneck" id="Earing">
+                                    <div class="flexdivnecklace marignbottomdiv" id="EaringImage">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="flexcolumndiv heightflexcolumndiv">
+                                <label id="lblNoseRing1" class="titlecolor" style="opacity: 0">
+                                    Nose Ring:
+                                </label>
+                                <div class="heightneck" id="nose">
+                                    <div class="flexdivnecklace" id="NoseringImage"></div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-------------------------------- tab section end----------------------------------- -->
+        <!-------------------------------- tab section start selfie gallery----------------------------------- -->
+
+        <div class="container-fluid" style="position: absolute; overflow: hidden">
+            <div class="row">
+                <div class="imagePanel positionimagepanel" id="ImagePanelselfie">
+                    <div class="flexcolumndiv">
+                        <label class="titlelabel">Selfie Gallery</label>
+                    </div>
+                    <div class="downloadposition">
+                        <button onclick="downloadAllPic()" class="downloadbtn">
+                            <img src="image/multipledownload.png" style="width: 30px"
+                                id="downloadimg" />Download all
+                        </button>
+                    </div>
+                    <div class="flexcolumndiv flexdivnecklace">
+                        <div id="Selfie__Container" class="heightneck overflowcolumn flexmob"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ----------------------logo section start------------------ -->
+            <div class="logo-clientlogo wow fadeInRight">
+                <img id="clientLogo" src="./image/transparent.png" crossorigin="anonymous" class="clientlogowidth" height="50" width="50" />
+            </div>
+
+            <!-- ----------------------logo section end------------------ -->
+
+            <!-- menu for tryon -->
+            <div class="mobdisplay">
+                <div class="menuoverlay menuactive" id="Menu_layer"></div>
+            </div>
+
+            <video id="_webcam" style="display: none" playsinline class="videosection"></video>
+            
+
+            <img id="JewelleryToTry" src="./image/transparent.png" style="display: none" />
+            <img id="NecklaceToTry" src="./image/transparent.png" crossorigin="anonymous" style="display: none" />
+            <img id="EaringToTry" src="./image/transparent.png" crossorigin="anonymous" style="display: none" />
+            <img id="EaringFlipedToTry" src="./image/transparent.png" crossorigin="anonymous" style="display: none" />
+            <img id="NoseringToTry" src="./image/transparent.png" crossorigin="anonymous" style="display: none" />
+            <img id="faceData" src="#" crossorigin="anonymous" style="display: none" />
+
+            <img id="nofaceFoundmob" class="" height="100%" back src="./image/newFaceMob.png" crossorigin="anonymous" style="display: none" />
+            
+            <!------------------- bottom menu section start--------------------------- -->
+            <div class="captured_img_container fadeInLeft wow">
+                <div id="captured__container"></div>
+            </div>
+        </div>
+        <div class="sharedownload_btn_container">
+            <div class="" id="sharedownload_buttons" style="display: none">
+                <div id="sharedownload_container">
+                    <img id="downloadpipc" style="padding: 5px" src="image/download.png" class="iconwidth mobdisplay" onclick="downloadURI()" />
+                </div>
+            </div>
+        </div>
+        <div id="finalMenu" class="homebtnposition fadeInLeft wow">
+            <div id="toolTip1" class="tooltip1" style="display: none;">
+                <span class="tooltiptext ishidden" id="menutext" style="top: -200%;">Back to <br>Catalogue</span>
+                <span class="tooltiptext" id="selfietext">Selfie Gallery</span>
+
+                <div class="iconbg top" style="margin-right: 10px">
+                    <img id="menu" src="image/menu.png" class="iconwidth mobdisplay ishidden" onclick="Openmenu()" />
+                    <div id='selfie-gallery' onclick="selfiegallery()">
+                        <img id="selfie-gallery" src="image/selfie2.png" class="iconwidth mobdisplay" />
+                        <span id="countSelfie" class=bellnumbers></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bottomiconposition fadeInRight wow">
+            <div id="btn-switch-camera" class="tooltip1" style="display: flex" onclick="switchCamera()">
+                <span class="tooltiptext">Switch Camera</span>
+                <div class="iconbg top" style="margin-right: 10px; padding-bottom: 0;">
+                    <img src="image/cameraSwitch.png" class="iconwidth" />
+                </div>
+            </div>
+            <div id="btn-live-tryon" class="tooltip1" onclick="camerastart()">
+                <span class="tooltiptext">Live Tryon</span>
+
+                <div class="iconbg top" style="margin-right: 10px">
+                    <img src="image/livetryon.png" class="iconwidth" />
+                </div>
+            </div>
+            <div id="uploadImage" class="tooltip1" onclick="uploadimage()">
+                <span class="tooltiptext uploadtooltip">Add upload<br />
+                    your photo</span>
+                <div class="iconbg top" style="margin-right: 10px">
+                    <img src="image/uploadPhoto.png" htmlfor="file" class="iconwidth mobdisplay" />
+                    <input type="file" id="file" style="display: none" onchange="getoutput(this)" name="image" accept="image/gif,image/jpeg,image/jpg,image/png" multiple="" data-original-title="upload photos" />
+                </div>
+            </div>
+            <div id="tryItonModel" class="tooltip1" onclick="tryItonModel()">
+                <span class="tooltiptext">Try it on Model</span>
+
+                <div class="iconbg top" style="margin-right: 10px">
+                    <img src="image/tryitonmodel.png" class="iconwidth" />
+                </div>
+            </div>
+            <div id="tackPicture" class="tooltip1" onclick="captureScreen()">
+                <span class="tooltiptext">Take a Picture</span>
+
+                <div class="iconbg top" style="margin-right: 10px">
+                    <img id="take-pic" src="image/takepicture.png" class="iconwidth mobdisplay" />
+                </div>
+            </div>
+           
+        </div>
+
+        <!------------------- bottom menu section end--------------------------- -->
+        <!------------------- try it on model popup section start--------------------------- -->
+        <div id="modelTryon" class="overlaytrymodel">
+            <div id="closemodel" class="closemodel" onclick="closeModel()">
+                <div class="close">X</div>
+            </div>
+            <div class="popuptrymodel popupwidth">
+                <div>
+                    <div style="padding: 10px;">
+                        <div class="imgcard"><img src="image/model1.png" onclick="imageClick('image/model1full.png')" />
+                            <img src="image/model2.png" onclick="imageClick('image/model2full.png')" />
+                            <img src="image/model3.png" onclick="imageClick('image/model3full.png')" />
+                            <img src="image/model4.png" onclick="imageClick('image/model4full.png')" />
+                            <img src="image/model5.png" onclick="imageClick('image/model5full.png')" />
+                            <img src="image/model6.png" onclick="imageClick('image/model6full.png')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!------------------- try it on model popup section end--------------------------- -->
+
+    <div class="footer wow fadeInUpBig" id="Footer">
+        <footer class="footer_area">
+            <div class="container">
+                <p class="footer-text">
+                    Created by
+                    <a href="#" target="_blank" class="underline" style="color: #898989">Dhaval Gediya</a>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- --------------NOTIFICATION POPUP------------------------- -->
+    <div class="notificationposition bottomtotop" id="notification-box" style="display: none">
+        <div class="rectangle">
+            <div class="notification-text">
+                <i class="material-icons">info</i>
+                <span>&nbsp;&nbsp;Image Captured Successfully </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------ -->
+    <script src="javascript/content.js"></script>
+    <script src="javascript/newfacescript.js"></script>
+    <script src="javascript/necklace.js"></script>
+</body>
+
+</html>
